@@ -272,10 +272,22 @@ class LinkedList
             }
         }
         
-        // int deleteAllNodes()
-        // {
-            
-        // }
+        int deleteAllNodes()
+        {
+            if(head!=NULL)
+            {
+                Node* temp=head;
+                Node* prev=NULL;
+                while(temp!=NULL)
+                {
+                    prev=temp;
+                    temp=temp->next;
+                    delete prev;
+                }
+                delete temp;
+                head = NULL;
+            }
+        }
         int size()
         {
             int count=0;
@@ -374,7 +386,8 @@ int main()
     
     // list.printAllNodes();
     
-    list.deleteNodeAtIndex(3);
+    // list.deleteNodeAtIndex(3);
+    list.deleteAllNodes();
     list.printAllNodes();
     
     return 0;
