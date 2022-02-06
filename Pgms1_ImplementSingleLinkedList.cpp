@@ -78,6 +78,7 @@ class LinkedList
             }
             else
             {
+                // You can also traverse till size()/2 index then write temp->next=temp->next->next;
                 Node* ptrStep1 = head;
                 Node* ptrStep2 = head;
                 
