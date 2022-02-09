@@ -166,121 +166,112 @@ class LinkedList
                 cout << "Head is Empty Delete At Start Failed" << endl;
             }
         }
-        // int deleteNodeAtEnd()
-        // {
-        //     if(head!=NULL)
-        //     {
-        //         Node* prev = NULL;
-        //         Node* temp = head;
-        //         while(temp->next!=NULL)
-        //         {
-        //             prev = temp;
-        //             temp = temp->next;
-        //         }
-        //         if(prev != NULL)
-        //         {
-        //             prev->next = NULL;
-        //             delete temp;
-        //         }
-        //         else
-        //         {
-        //             delete temp;
-        //             head = NULL;
-        //         }
-        //     }
-        //     else
-        //     {
-        //         cout << "Head is Empty Delete At End Failed" << endl;
-        //     }
-        // }
-        // int deleteNodeAtMid()
-        // {
-        //     if(head != NULL)
-        //     {
-        //         Node* ptrSteps1=head;
-        //         Node* ptrSteps2=head;
-        //         while(ptrSteps2->next!=NULL && ptrSteps2->next->next!=NULL)
-        //         {
-        //             ptrSteps1=ptrSteps1->next;
-        //             ptrSteps2=ptrSteps2->next->next;
-        //         }
-        //         Node* prevNode;
-        //         Node* nextNode;
-        //         if(ptrSteps2->next!=NULL)
-        //         {
-        //             ptrSteps2=ptrSteps2->next; // Even no of elements
-        //         }
+        int deleteNodeAtEnd()
+        {
+            if(head!=NULL)
+            {
+                Node* prev = NULL;
+                Node* temp = head;
+                while(temp->next!=head)
+                {
+                    prev = temp;
+                    temp = temp->next;
+                }
+                if(prev != NULL)
+                {
+                    prev->next = head;
+                    delete temp;
+                }
+                else
+                {
+                    delete temp;
+                    head = NULL;
+                }
+            }
+            else
+            {
+                cout << "Head is Empty Delete At End Failed" << endl;
+            }
+        }
+        int deleteNodeAtMid()
+        {
+            if(head != NULL)
+            {
+                Node* prev=NULL;
+                Node* slowPtr=head;
+                Node* fastPtr=head;
+                while(fastPtr->next!=head)
+                {
+                    fastPtr=fastPtr->next->next;
+                    prev=slowPtr;
+                    slowPtr=slowPtr->next;
+                    if(fastPtr==head)
+                    {
+                        break;
+                    }
+                    
+                }
+                Node* nextNode;
                 
-        //         prevNode=ptrSteps1->prev;
-        //         nextNode=ptrSteps1->next;
+                if(prev!=NULL)
+                    prev->next=slowPtr->next;
+                else
+                    head=NULL;
                 
-        //         if(prevNode!=NULL)
-        //             prevNode->next=nextNode;
-        //         else
-        //         {
-        //             head=nextNode; // Only one node left 
-        //         }
-        //         if(nextNode!=NULL)  
-        //             nextNode->prev=prevNode;
+                delete slowPtr;
                 
-
-        //             delete ptrSteps1;
+            }
+            else
+            {
+                cout << "Head is Empty Delete At Mid Failed" << endl;
+            }
+        }
+        void deleteNodeAtIndex(int K)
+        {
+            if(head==NULL)
+            {
+                cout << "Head is Empty Delete At Index Failed" << endl;
+                return;
+            }
+            else if(K==1) // delete at head and Head !=NULL check done in First IF
+            {
+                deleteNodeAtStart();
+            }
+            else if( K <= 0 || K > size() )
+            {
+                cout << "K is Invalid No Delete Performed ... . Valid K Starts from 1" << endl;
+                return;
+            }
+            else if( head!=NULL )
+            {
+                int i=0;
                 
-                
-        //     }
-        //     else
-        //     {
-        //         cout << "Head is Empty Delete At Mid Failed" << endl;
-        //     }
-        // }
-        // void deleteNodeAtIndex(int K)
-        // {
-        //     if(head==NULL)
-        //     {
-        //         cout << "Head is Empty Delete At Index Failed" << endl;
-        //         return;
-        //     }
-        //     else if(K==1) // delete at head and Head !=NULL check done in First IF
-        //     {
-        //         deleteNodeAtStart();
-        //     }
-        //     else if( K <= 0 || K > size() )
-        //     {
-        //         cout << "K is Invalid No Delete Performed ... . Valid K Starts from 1" << endl;
-        //         return;
-        //     }
-        //     else if( head!=NULL )
-        //     {
-        //         int i=0;
-                
-        //         Node* prev=NULL;
-        //         Node* temp=head;
-        //         while(i<K && temp!=NULL)
-        //         {
-        //             if(i==K-1)
-        //             {
-        //                 // delete=true;
-        //                 break;
-        //             }
-        //             else
-        //             {
-        //                 i++;
-        //                 prev=temp;
-        //                 temp=temp->next;
-        //             }
-        //         }
-        //         if(prev != NULL && temp != NULL)
-        //         {
-        //             prev->next=temp->next;
-        //             temp->prev=prev;
-        //         }
-        //         delete temp;
-        //     }
-        //     else
-        //     {
-        //         cout << " Delete At Index Failed  Reason Unknown" << endl;
-        //     }
-        // }
+                Node* prev=NULL;
+                Node* temp=head;
+                while(i<K && temp!=NULL)
+                {
+                    if(i==K-1)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        i++;
+                        prev=temp;
+                        temp=temp->next;
+                    }
+                }
+                if(prev != NULL && temp != NULL)
+                {
+                    prev->next=temp->next;
+                }
+                delete temp;
+            }
+            else
+            {
+                cout << " Delete At Index Failed  Reason Unknown" << endl;
+            }
+        }
         
         void printAllNodes()
         {
@@ -302,22 +293,22 @@ class LinkedList
             }
         }
         
-        // int deleteAllNodes()
-        // {
-        //     if(head!=NULL)
-        //     {
-        //         Node* temp=head;
-        //         Node* prev=NULL;
-        //         while(temp!=NULL)
-        //         {
-        //             prev=temp;
-        //             temp=temp->next;
-        //             delete prev;
-        //         }
-        //         delete temp;
-        //         head = NULL;
-        //     }
-        // }
+        int deleteAllNodes()
+        {
+            if(head!=NULL)
+            {
+                Node* temp=head;
+                Node* prev=NULL;
+                while(temp!=head)
+                {
+                    prev=temp;
+                    temp=temp->next;
+                    delete prev;
+                }
+                delete temp;
+                head = NULL;
+            }
+        }
         int size()
         {
             int count=1;
@@ -340,7 +331,7 @@ int main()
     
     LinkedList list;
     
-    for(int i=0;i<6;i++)
+    for(int i=0;i<5;i++)
     {
         list.insertNodeAtEnd(i+1);
     }
@@ -360,26 +351,26 @@ int main()
     // list.printAllNodes();
     // // list.printAllNodes();
     
-    list.deleteNodeAtStart();
-    list.printAllNodes();
+    // list.deleteNodeAtEnd();
+    // list.printAllNodes();
     
-    list.deleteNodeAtStart();
-    list.printAllNodes();
+    // list.deleteNodeAtEnd();
+    // list.printAllNodes();
     
-    list.deleteNodeAtStart();
-    list.printAllNodes();
+    // list.deleteNodeAtEnd();
+    // list.printAllNodes();
     
-    list.deleteNodeAtStart();
-    list.printAllNodes();
+    // list.deleteNodeAtEnd();
+    // list.printAllNodes();
     
-    list.deleteNodeAtStart();
-    list.printAllNodes();
+    // list.deleteNodeAtEnd();
+    // list.printAllNodes();
     
-    list.deleteNodeAtStart();
-    list.printAllNodes();
+    // list.deleteNodeAtEnd();
+    // list.printAllNodes();
     
-    list.deleteNodeAtStart();
-    list.printAllNodes();
+    // list.deleteNodeAtEnd();
+    // list.printAllNodes();
     
     // list.deleteNodeAtEnd();
     // list.printAllNodes();
@@ -419,9 +410,10 @@ int main()
     
     // list.printAllNodes();
     
-    // list.deleteNodeAtIndex(4);
-    // list.deleteAllNodes();
-    // list.printAllNodes();
+    list.deleteAllNodes();
+    list.deleteNodeAtIndex(1);
+    
+    list.printAllNodes();
     
     // list.deleteNodeAtIndex(3);
     // list.printAllNodes();
