@@ -80,6 +80,27 @@ Node* deleteAtHead(Node* head)
     return head;
 }
 
+Node* InsertAtHead(Node* head,int val)
+{
+    Node* newNode = new Node(val);
+    newNode->next = head;
+    return newNode;
+}
+
+Node* InsertAtTail(Node* head,int val)
+{
+    if(head==nullptr)
+        return new Node(val);
+    Node* temp = head;
+    while(temp->next!=nullptr)
+    {
+        temp =  temp->next;
+    }
+    Node* newNode = new Node(val);
+    temp->next = newNode;
+    return head;
+}
+
 Node* deleteAtTail(Node* head)
 {
     if(head==nullptr)
@@ -162,6 +183,42 @@ Node* deleteAtValue(Node* head,int val)
     }
     return head;
 }
+
+Node* InsertAtIndex(Node* head,int k,int val)
+{
+    if(head==nullptr)
+        return new Node(val);
+
+    if(k==1)
+    {
+        return InsertAtHead(head,val);
+    }
+
+    Node* temp = head;
+    Node* prev = nullptr;
+
+    int cnt = 0;
+    while(temp!=nullptr)
+    {
+        cnt++;
+        if(cnt==k)
+        {
+            Node* newNode = new Node(val);
+            prev->next = newNode;
+            newNode->next = temp;
+            break;
+        }
+        prev = temp;
+        temp = temp->next;
+
+    }
+    if(cnt+1 == k)
+    {
+        InsertAtTail(head,val);
+    }
+
+    return head;
+}
 int main()
 {
     cout << "Singly Linked List" << endl;
@@ -190,5 +247,19 @@ int main()
     head = deleteAtValue(head,5);
     cout << "SLL after deleteAtValue 1 --> " ;
     Print_SLL(head);
+
+    head = InsertAtHead(head,1);
+    cout << "SLL after InsertAtHead  --> " ;
+    Print_SLL(head);
+
+
+    head = InsertAtTail(head,10);
+    cout << "SLL after InsertAtTail  --> " ;
+    Print_SLL(head);
+
+    head = InsertAtIndex(head,3,3);
+    cout << "SLL after InsertAtIndex  --> " ;
+    Print_SLL(head);
+
     return 0;
 }
