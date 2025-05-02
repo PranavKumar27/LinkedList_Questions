@@ -51,9 +51,10 @@ void Print_SLL(Node* head)
     Node* temp = head;
     while(temp!=nullptr)
     {
-        cout << "val=" << temp->data <<  ",";
+        cout << temp->data <<  ",";
         temp = temp->next;
     }
+    cout << endl;
 }
 
 bool searchInSLL(Node*head,int x)
@@ -68,11 +69,104 @@ bool searchInSLL(Node*head,int x)
     return 0;
 }
 
+Node* deleteAtHead(Node* head)
+{
+    if(head==nullptr)
+        return nullptr;
+
+    Node*temp = head;
+    head=head->next;
+    delete(temp);
+    return head;
+}
+
+Node* deleteAtTail(Node* head)
+{
+    if(head==nullptr)
+        return nullptr;
+
+    Node* temp = head;
+    Node* prev=nullptr;
+    while(temp->next!=nullptr)
+    {
+        prev = temp;
+        temp=temp->next;
+    }
+
+    prev->next = temp->next;
+    delete(temp);
+    return head;
+}
+
+Node* deleteAtIndex(Node* head,int k)
+{
+    if(head==nullptr)
+        return nullptr;
+
+    if(k==1)
+    {
+        return deleteAtHead(head);
+    }
+
+    int lenofSLL = LengthOfSLL(head);
+    if(k==lenofSLL)
+    {
+        return deleteAtTail(head);
+    }
+    else if(k>lenofSLL)
+    {
+        return head;
+    }
+
+    Node*temp = head;
+    Node*prev = nullptr;
+    int cnt = 0;
+    while(temp!=nullptr)
+    {
+        cnt++;
+        if(cnt==k)
+        {
+           prev->next = temp->next;
+           delete(temp);
+           break;
+        }
+        prev = temp;
+        temp=temp->next;
+    }
+    return head;
+}
+
+Node* deleteAtValue(Node* head,int val)
+{
+    if(head==nullptr)
+        return head;
+
+    if(head->data == val)
+    {
+        return deleteAtHead(head);
+    }
+    Node* prev = nullptr;
+    Node* temp = head;
+
+    while(temp!=nullptr)
+    {
+        if(temp->data == val)
+        {
+            prev->next = temp->next;
+            delete(temp);
+            break;
+        }
+        prev = temp;
+        temp = temp->next;
+
+    }
+    return head;
+}
 int main()
 {
     cout << "Singly Linked List" << endl;
 
-    vector<int> Arr = {1,2,3,4};
+    vector<int> Arr = {1,2,3,4,5,6,7,8,9,10};
 
     Node* head = convertArrToSLL(Arr);
     Print_SLL(head);
@@ -80,5 +174,21 @@ int main()
     cout << "Len of SLL =" << LengthOfSLL(head) << endl;
 
     cout << "Is 5 Present in SLL =" << searchInSLL(head,3) << endl;
+
+    head = deleteAtHead(head);
+    cout << "SLL after deleteAtHead--> " ;
+    Print_SLL(head);
+
+    head = deleteAtTail(head);
+    cout << "SLL after deleteAtTail--> " ;
+    Print_SLL(head);
+
+    head = deleteAtIndex(head,2);
+    cout << "SLL after deleteAtIndex 2 --> " ;
+    Print_SLL(head);
+
+    head = deleteAtValue(head,5);
+    cout << "SLL after deleteAtValue 1 --> " ;
+    Print_SLL(head);
     return 0;
 }
