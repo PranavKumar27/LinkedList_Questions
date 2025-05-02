@@ -219,6 +219,41 @@ Node* InsertAtIndex(Node* head,int k,int val)
 
     return head;
 }
+
+
+Node* InsertBeforeVal(Node* head,int val1,int val2)
+{
+    if(head==nullptr)
+        return new Node(val2);
+
+    if(val1<=head->data)
+    {
+        return InsertAtHead(head,val2);
+    }
+
+    Node* temp = head;
+    Node* prev = nullptr;
+
+    while(temp!=nullptr)
+    {
+        if(val1<=temp->data)
+        {
+            Node* newNode = new Node(val2);
+            prev->next = newNode;
+            newNode->next = temp;
+            break;
+        }
+        prev = temp;
+        temp = temp->next;
+
+    }
+    if(temp==nullptr)
+    {
+        InsertAtTail(head,val2);
+    }
+
+    return head;
+}
 int main()
 {
     cout << "Singly Linked List" << endl;
@@ -261,5 +296,10 @@ int main()
     cout << "SLL after InsertAtIndex  --> " ;
     Print_SLL(head);
 
+
+
+    head = InsertBeforeVal(head,3,100);
+    cout << "SLL after InsertBeforeVal  --> " ;
+    Print_SLL(head);
     return 0;
 }
