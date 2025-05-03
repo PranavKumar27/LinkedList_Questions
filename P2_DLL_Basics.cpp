@@ -97,15 +97,62 @@ Node* delete_AtINDEX_k(Node* head,int k)
     if(head==nullptr)
         return nullptr;
 
-    if(k==1)
-        return deleteHead(head);
-
-    int cnt= 0 ;
+    int cnt = 0;
     Node* temp = head;
-    while(temp->next!=nullptr)
+    while(temp!=nullptr)
     {
         cnt++;
         if(cnt == k)
+        {
+           break;
+        }
+        temp = temp->next;
+    }
+
+    Node* PrevNode = temp->prev;
+    Node* NextNode = temp->next;
+
+    if(PrevNode==nullptr && NextNode == nullptr)
+    {
+        free(temp);
+        return nullptr;
+    }
+    else if(PrevNode==nullptr && NextNode != nullptr)
+    {
+        return deleteHead(head);
+    }
+    else if(PrevNode!=nullptr && NextNode == nullptr)
+    {
+        return deleteTail(head);
+    }
+    else
+    {
+        PrevNode->next = NextNode;
+        NextNode->prev = PrevNode;
+
+        temp->prev = nullptr;
+        temp->next = nullptr;
+
+        delete(temp);
+    }
+    return head;
+}
+
+
+
+
+Node* delete_Val(Node* head,int val)
+{
+    if(head==nullptr)
+        return nullptr;
+
+    if(val==head->data)
+        return deleteHead(head);
+
+    Node* temp = head;
+    while(temp->next!=nullptr)
+    {
+        if(temp->data == val)
         {
            Node* PrevNode = temp->prev;
            Node* NextNode = temp->next;
@@ -115,25 +162,143 @@ Node* delete_AtINDEX_k(Node* head,int k)
            delete(temp);
 
            PrevNode->next = NextNode;
-           NextNode->prev = PrevNode;
+           if(NextNode!=nullptr)
+               NextNode->prev = PrevNode;
            break;
         }
         temp = temp->next;
     }
     return head;
 }
+void delete_Node(Node* Temp)
+{
+    if(Temp==nullptr)
+        return;
+    Node* PrevNode = Temp->prev;
+    Node* NextNode = Temp->next;
+
+    PrevNode->next = NextNode;
+    if(NextNode!=nullptr)
+        NextNode->prev = PrevNode;
+
+    Temp->prev = nullptr;
+    Temp->next = nullptr;
+    delete(Temp);
+}
+
+Node* InsertBeforeHead(Node* head,int val)
+{
+    Node* newHead = new Node(val,nullptr,head);
+    head->prev = newHead;
+    return newHead;
+}
+
+Node* InsertBeforeTail(Node* head,int val)
+{
+    if(head->next == nullptr) // Single Element Linked List
+        return InsertBeforeHead(head,val);
+
+    Node* temp = head;
+    while(temp->next!=nullptr)
+    {
+        temp = temp->next;
+    }
+    // At the tail Index so temp -> current tail
+    Node* PrevNode = temp->prev;
+    Node* newNode = new Node(val,PrevNode,temp);
+
+    PrevNode->next = newNode;
+    temp->prev = newNode;
+    return head;
+}
+
+Node* InsertAtKthNode(Node* head,int k,int val)
+{
+    if(head==nullptr)
+    {
+        if(k==1)
+            return new Node(val);
+        else
+            return nullptr;
+    }
+
+    if(k==1)
+    {
+        return InsertBeforeHead(head,val);
+    }
+    Node* temp = head;
+    int cnt = 0;
+    while(temp->next!=nullptr)
+    {
+        cnt++;
+        if(cnt==k)
+        {
+            break;
+        }
+        temp = temp->next;
+    }
+
+    Node* PrevNode = temp->prev;
+    Node* NextNode = temp->next;
+
+    if(NextNode==nullptr)
+    {
+        if(cnt==k)
+            return InsertBeforeTail(head,val);
+        else
+            return head;
+    }
+    else
+    {
+        Node* newNode = new Node(val,PrevNode,temp);
+        PrevNode->next = newNode;
+        temp->prev = newNode;
+    }
+    return head;
+
+}
+
+void InsertBeforeNode(Node* Temp,int val)
+{
+    Node* PrevNode = Temp->prev;
+    Node* newNode = new Node(val,PrevNode,Temp);
+
+    PrevNode->next = newNode;
+    Temp->prev = newNode;
+}
 int main()
 {
     cout << "<----Doubly Linked List---->" << endl;
-    vector<int> Arr = {3,1,2,7};
+    vector<int> Arr = {4,12,30,70};
     Node* head = convert_Arr_to_DLL(Arr);
     print_DLL(head);
     //head = deleteHead(head);
-    print_DLL(head);
+    //print_DLL(head);
 
     //head = deleteTail(head);
+    //print_DLL(head);
+    head = delete_AtINDEX_k(head,4);
     print_DLL(head);
-    head = delete_AtINDEX_k(head,3);
+
+    head = delete_Val(head,12);
+    print_DLL(head);
+
+    delete_Node(head->next);
+    print_DLL(head);
+
+    head=InsertBeforeHead(head,4);
+    print_DLL(head);
+
+    head = InsertBeforeTail(head,70);
+    print_DLL(head);
+
+    head=InsertAtKthNode(head,2,12);
+    print_DLL(head);
+
+    head=InsertAtKthNode(head,8,30);
+    print_DLL(head);
+
+    InsertBeforeNode(head->next->next,100);
     print_DLL(head);
     return 0;
 }
