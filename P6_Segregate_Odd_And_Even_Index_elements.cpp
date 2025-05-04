@@ -64,10 +64,12 @@ void print_vector(vector<int>& V)
     cout << endl;
 }
 
-void ReArrangeOddIndex_EvenIndex_elements(Node* head)
+// TC -> O(N/2+N/2 + N) = O(2N) 
+// SC -> O(N) for Vector
+void ReArrangeOddIndex_EvenIndex_elements_Sol1(Node* head)
 {
     vector<int> ReArrange;
-    if(head==nullptr)
+    if(head==nullptr||head->next==nullptr)
         return;
     Node* temp = head;
 
@@ -104,6 +106,44 @@ void ReArrangeOddIndex_EvenIndex_elements(Node* head)
     return;
 }
 
+// TC -> O(N) 
+// SC -> O(1)
+void ReArrangeOddIndex_EvenIndex_elements_Sol2(Node* head)
+{
+   if(head==nullptr || head->next==nullptr)
+        return;
+
+   Node* OddHead = head;
+   Node* EvenHead = head->next;
+   Node* tempEven = head->next;
+   while(EvenHead!=nullptr)
+   {
+       if(OddHead->next!=nullptr)
+       {
+           Node* NewOdd=OddHead->next->next;
+          if(NewOdd!=nullptr) // We need to assign evenHead to OddHead at the END,
+                            //Hence do not make OddHead as null
+          {
+             OddHead->next = NewOdd;
+             OddHead = NewOdd;
+          }
+       }
+       if(EvenHead->next!=nullptr)
+       {
+           Node* NewEven = EvenHead->next->next;
+           EvenHead->next = NewEven;
+           EvenHead = NewEven;
+       }
+       else
+       {
+           EvenHead = EvenHead->next;
+       }
+
+   }
+   OddHead->next = tempEven;
+   return;
+
+}
 int main()
 {
     cout << "Print_Odd_then_Even" << endl;
@@ -112,7 +152,7 @@ int main()
     Print_SLL(head);
 
     cout << "After ReArrange of OddIndex and EvenIndex elements" << endl;
-    ReArrangeOddIndex_EvenIndex_elements(head);
+    ReArrangeOddIndex_EvenIndex_elements_Sol2(head);
     Print_SLL(head);
     return 0;
 }
