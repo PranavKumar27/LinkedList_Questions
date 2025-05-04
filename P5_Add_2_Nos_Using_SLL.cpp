@@ -100,8 +100,11 @@ Node* AddTwoList_Sol2(Node* head1,Node* head2)
 {
     Node* tmp1 = head1;
     Node* tmp2 = head2;
-    Node* sumHead = nullptr;
-    Node* PrevNode = nullptr;
+    Node * dummyHead = new Node(-1); // NOTE: Whenever we need to create a new List, Always Use a dummy head
+                                    // so that we don't need to compare and check for Head we can directly
+                                    // Make links form PrvNode->next = new Node(v)
+    Node* sumHead = dummyHead;
+    Node* PrevNode = sumHead;
     vector<int> res;
     int carry = 0;
     int v=0;
@@ -114,16 +117,8 @@ Node* AddTwoList_Sol2(Node* head1,Node* head2)
         carry = s/10;
         v = s%10;
         Node* newNode = new Node(v);
-        if(sumHead==nullptr)
-        {
-            sumHead = newNode;
-            PrevNode = newNode;
-        }
-        else
-        {
-            PrevNode->next = newNode;
-            PrevNode = newNode;
-        }
+        PrevNode->next = newNode;
+        PrevNode = newNode;
         tmp1 = tmp1->next;
         tmp2 = tmp2->next;
 
@@ -136,16 +131,8 @@ Node* AddTwoList_Sol2(Node* head1,Node* head2)
         carry = s/10;
         v = s%10;
         Node* newNode = new Node(v);
-        if(sumHead==nullptr)
-        {
-            sumHead = newNode;
-            PrevNode = newNode;
-        }
-        else
-        {
-            PrevNode->next = newNode;
-            PrevNode = newNode;
-        }
+        PrevNode->next = newNode;
+        PrevNode = newNode;
         tmp1 = tmp1->next;
     }
 
@@ -156,34 +143,21 @@ Node* AddTwoList_Sol2(Node* head1,Node* head2)
         carry = s/10;
         v = s%10;
         Node* newNode = new Node(v);
-        if(sumHead==nullptr)
-        {
-            sumHead = newNode;
-            PrevNode = newNode;
-        }
-        else
-        {
-            PrevNode->next = newNode;
-            PrevNode = newNode;
-        }
+        PrevNode->next = newNode;
+        PrevNode = newNode;
         tmp2 = tmp2->next;
     }
 
     if(carry!=0)
     {
         Node* newNode = new Node(carry);
-        if(sumHead==nullptr)
-        {
-            sumHead = newNode;
-            PrevNode = newNode;
-        }
-        else
-        {
-            PrevNode->next = newNode;
-            PrevNode = newNode;
-        }
+        PrevNode->next = newNode;
+        PrevNode = newNode;
     }
 
+    Node* oldHead = sumHead;
+    sumHead = sumHead->next;
+    free(oldHead);
     return sumHead;
 }
 
@@ -191,7 +165,7 @@ int main()
 {
     cout << "Add 2 Nos in SLL" << endl;
 
-    vector<int> Arr1;
+    vector<int> Arr1 = {2,3,4};
     vector<int> Arr2 = {5,7,9};
 
     Node* head1 = convertArrayToList(Arr1);
