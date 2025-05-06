@@ -47,6 +47,8 @@ void Print_SLL(Node* head)
     cout << endl;
 }
 
+// TC --> O(2N)
+// SC --> O(3)
 Node* deleteKthNode_fromEnd_Sol1(Node* head,int k)
 {
     // Step1: Count the Nodes;
@@ -149,6 +151,8 @@ Node* deleteKthNode_fromEnd_Sol1(Node* head,int k)
 
 */
 
+// TC --> O(N)
+// SC -> O(1)
 Node* deleteKthNode_fromEnd_Sol2(Node* head,int k)
 {
     Node* fast = head;
