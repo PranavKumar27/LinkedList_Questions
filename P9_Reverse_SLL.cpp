@@ -90,10 +90,23 @@ Node* reverse_SLL_Sol2(Node* head)
     return prevNode;
 }
 
+Node* reverse_SLL_Sol3(Node* head)
+{
+    if(head==nullptr||head->next == nullptr)
+        return head;
+
+    Node* newHead = reverse_SLL_Sol3(head->next);
+    Node* front_ = head->next;
+    front_->next = head;
+    head->next = nullptr;
+    return newHead;
+}
+
 int main()
 {
     cout << "Reverse SLL" << endl;
     vector<int> Arr = {1,2,3,4,5};
+
     Node* head1 = convertArrToSLL(Arr);
     Print_SLL(head1);
     cout << "Using Sol1 Reverse:" << endl;
@@ -103,9 +116,16 @@ int main()
 
     Node* head2 = convertArrToSLL(Arr);
     Print_SLL(head2);
-    cout << "Using Sol2 Reverse:" << endl;
-    reverse_SLL_Sol1(head2);
+    cout << "Using Sol2 Iterative Reverse:" << endl;
+    head2=reverse_SLL_Sol2(head2);
     Print_SLL(head2);
+
+
+    Node* head3 = convertArrToSLL(Arr);
+    Print_SLL(head3);
+    cout << "Using Sol3 Recursion Reverse:" << endl;
+    head3=reverse_SLL_Sol3(head3);
+    Print_SLL(head3);
 
     return 0;
 }
