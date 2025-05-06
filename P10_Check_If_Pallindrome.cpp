@@ -82,7 +82,7 @@ Node* reverse_SLL(Node* head)
    return newHead;
 }
 
-// TC -> O(N)
+// TC -> O(N/2) + O(N/2) while + rev +  O(N/2) + O(N/2) while + rev  = O(2N)
 // SC -> O(1)
 bool IsPallindrome_Sol2(Node* head)
 {
@@ -110,10 +110,15 @@ bool IsPallindrome_Sol2(Node* head)
     while(second!=nullptr)
     {
        if(first->data!=second->data)
-            return false;
+       {
+           reverse_SLL(RevHead); // Bring back original state
+           return false;
+       }
+
        first = first->next;
        second = second->next;
     }
+    reverse_SLL(RevHead); // Bring back original state
     return true;
 }
 int main()
