@@ -135,15 +135,48 @@ Node* Add_1_to_List(Node* head)
     return head;
 }
 
+int find_Carry(Node* head)
+{
+    if(head==nullptr)
+        return 1;
+
+    int carry = find_Carry(head->next);
+    if(carry>0)
+    {
+        int newval = head->val+carry;
+        head->val = newval%10;
+        carry = newval/10;
+    }
+    return carry;
+}
+// TC -> O(N)
+// SC -> O(N) for Recursion
+Node* Add_1_to_List_Sol2(Node* head)
+{
+    int carry = find_Carry(head);
+    if(carry==1)
+    {
+        Node* newNode = new Node(carry,head);
+        head = newNode;
+        cout << "Add New Node Since Carry=1" << endl;
+        print_SLL(head);
+    }
+    return head;
+}
+
 int main()
 {
     cout << "Add 1 to List" << endl;
-    vector<int> Arr = {1,9,9};
+    vector<int> Arr = {9,9,9};
     Node* head = convertArrayToList(Arr);
     print_SLL(head);
 
-    head= Add_1_to_List(head);
+    head= Add_1_to_List_Sol2(head);
+
     print_SLL(head);
+
+
+
 
 
     return 0;
