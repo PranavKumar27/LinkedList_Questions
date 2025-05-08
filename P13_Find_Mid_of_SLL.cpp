@@ -59,6 +59,8 @@ int findLenOf_SLL(Node* head)
     return cnt;
 }
 
+// TC --> O(N) + O(N/2)
+// SC --> O(1)
 Node* mid_Of_SLL_Sol1(Node* head)
 {
     int len = findLenOf_SLL(head);
@@ -77,6 +79,8 @@ Node* mid_Of_SLL_Sol1(Node* head)
 }
 
 // Tortoise and Hare Algo
+// TC --> O(N/2)
+// SC --> O(1)
 Node* mid_Of_SLL_Sol2(Node* head)
 {
     Node* tortoise = head;
