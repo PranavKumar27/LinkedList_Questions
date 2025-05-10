@@ -95,14 +95,23 @@ Node* AddTwoList_Sol1(Node* head1,Node* head2)
 
     return convertArrayToList(res);
 }
+Node* TrimLeadingZeros(Node* head)
+{
+    while(head!=nullptr && head->data ==0)
+        head = head->next;
+    return head;
+}
 
 Node* AddTwoList_Sol2(Node* head1,Node* head2)
 {
+    // Remove Zeros as done in GFG
+    head1 = TrimLeadingZeros(head1);
+    head2 = TrimLeadingZeros(head2); 
     Node* tmp1 = head1;
     Node* tmp2 = head2;
     Node * dummyHead = new Node(-1); // NOTE: Whenever we need to create a new List, Always Use a dummy head
                                     // so that we don't need to compare and check for Head we can directly
-                                    // Make links form PrvNode->next = new Node(v)
+                                   // Make links form PrvNode->next = new Node(v)
     Node* sumHead = dummyHead;
     Node* PrevNode = sumHead;
     vector<int> res;
