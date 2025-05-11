@@ -48,6 +48,8 @@ void print_DLL(Node* head)
     cout << endl;
 }
 
+// TC --> O(N)
+// SC --> O(1)
 Node* remove_Duplicates(Node* head)
 {
     Node* temp = head;
@@ -55,27 +57,25 @@ Node* remove_Duplicates(Node* head)
     while(temp!=nullptr)
     {
         int val = temp->data;
-        Node* t2 = temp->next;
-        while(t2!=nullptr)
+        Node* nextNode = temp->next;
+        while(nextNode!=nullptr)
         {
-            if(t2->data == val)
-                t2 = t2->next;
+            if(nextNode->data == val)
+            {
+                Node* delNode = nextNode;
+                delete(delNode);
+                nextNode = nextNode->next;
+            }
             else
                 break;
         }
-
-        if(t2==temp->next) // No duplicates
-        {
-            //cout << "No duplicates" << endl;
-            temp=t2;
-        }
-        else
-        {
-            temp->next = t2;
-            if(t2!=nullptr)
-                t2->prev = temp;
-            temp = t2;
-        }
+        // Steps Can be same whether Value is repeated or not
+        // Works for 1,1,1,2,2 as well as 1,2,2,3,3
+        // No special condition needed if nextNode == temp->next above while loop is skipped
+        temp->next = nextNode;
+        if(nextNode!=nullptr)
+            nextNode->prev = temp;
+        temp = nextNode;
     }
     return head;
 }
