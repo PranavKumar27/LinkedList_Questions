@@ -47,6 +47,22 @@ void Print_SLL(Node* head)
     cout << endl;
 }
 
+Node* findNth_Node(Node* head,int x)
+{
+    int cnt=1;
+    Node* temp = head;
+    while(temp->next!=head)
+    {
+        if(cnt==x)
+        {
+            return temp;
+        }
+        cnt++;
+        temp=temp->next;
+    }
+    return nullptr;
+}
+
 Node* rotate_SLL_By_K(Node* head,int k)
 {
     // Step 1: Find length of the SLL and reach the tail and connect tail->next = head;
@@ -71,25 +87,17 @@ Node* rotate_SLL_By_K(Node* head,int k)
     if(tail!=nullptr)
         tail->next = head;
 
-    cout << "len=" << len << endl;
 
     // Step 2 Need to traverse x distance from head and set it to null and make x+1 distance node as newHead
     int x = len-k;
 
     Node* temp = head;
     int cnt=1;
-    while(temp->next!=head)
-    {
-        if(cnt==x)
-        {
-            Node* newHead=temp->next;
-            temp->next=nullptr;
-            head = newHead;
-            break;
-        }
-        cnt++;
-        temp=temp->next;
-    }
+
+    Node* NthNode = findNth_Node(head,x);
+    Node* newHead=NthNode->next;
+    NthNode->next=nullptr;
+    head = newHead;
 
     return head;
 
@@ -98,7 +106,7 @@ Node* rotate_SLL_By_K(Node* head,int k)
 int main()
 {
     cout << "Challenge : Rotate SLL by K" << endl;
-    vector<int> Arr = {1,2};
+    vector<int> Arr = {1,2,3,4,5};
     int k = 2;
     Node* head = convertArrToSLL(Arr);
     cout << "Before Rotate SLL by K" << endl;
