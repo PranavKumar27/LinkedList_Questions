@@ -63,6 +63,8 @@ Node* findNth_Node(Node* head,int x)
     return nullptr;
 }
 
+// TC --> O(N+N) = O(2N)
+// SC --> O(1)
 Node* rotate_SLL_By_K(Node* head,int k)
 {
     // Step 1: Find length of the SLL and reach the tail and connect tail->next = head;
