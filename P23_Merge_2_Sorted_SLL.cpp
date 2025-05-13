@@ -5,7 +5,7 @@
 
 using namespace std;
 
-// Notes in the Copy
+// Note : Whenever We need to create a new List, Always create a dummy Node for clean implementation
 
 class Node
 {
