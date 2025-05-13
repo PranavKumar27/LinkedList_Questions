@@ -123,7 +123,7 @@ Node* mergeSorted_SLL_Sol2(Node* head1,Node* head2)
     {
         temp->next = t2;
     }
-    if(t2==nullptr)
+    else if(t2==nullptr)
     {
         temp->next = t1;
     }
