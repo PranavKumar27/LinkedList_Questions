@@ -89,7 +89,7 @@ Node* mergeSorted_SLL_Sol1(Node* head1,Node* head2)
 
 }
 
-// TC --> O(N)
+// TC --> O(N) where N = N1+N2
 // SC --> O(1)
 Node* mergeSorted_SLL_Sol2(Node* head1,Node* head2)
 {
