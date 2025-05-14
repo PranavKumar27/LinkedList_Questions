@@ -99,7 +99,8 @@ void print_Arr(vector<int> Arr)
         cout << d << " ";
     cout << endl;
 }
-
+// TC --> O(X) + X*Log(X) + O(X) where X = N*M
+// SC --> O(X)
 Node* flatten_2D_SLL(Node* head)
 {
     vector<int> List_Arr = convert_2D_SLL_to_Arr(head);
@@ -112,22 +113,60 @@ Node* flatten_2D_SLL(Node* head)
 
 }
 
-Node* flatten_2D_SLL_Sol2(Node* head)
-{
-    
-}
 
 
 Node* merge_2_SLL(Node* head1,Node* head2)
 {
     Node* t1 = head1;
     Node* t2 = head2;
-    
+
+    Node* head = new Node(-1);
+    Node* temp=head;
+    int v1,v2;
     while(t1!=nullptr && t2!=nullptr)
     {
-        
+        v1 = t1->val;
+        v2 = t2->val;
+
+        if(v1<v2)
+        {
+            temp->child = t1;
+            temp = t1;
+            t1=t1->child;
+        }
+        else
+        {
+            temp->child = t2;
+            temp = t2;
+            t2 = t2->child;
+        }
+        temp->next = nullptr;
     }
+
+    if(t1)
+        temp->child = t1;
+    else
+        temp->child = t2;
+
+    //cout << "After Merge" << endl;
+    //print_2D_SLL(head);
+    return head->child;
 }
+
+// TC --> N*O(X)  where X = N*M
+// SC --> O(N)
+Node* flatten_2D_SLL_Sol2(Node* head)
+{
+    if(head->next==nullptr)
+        return head;
+
+    Node* head2 = flatten_2D_SLL_Sol2(head->next);
+    Node* newHead = merge_2_SLL(head,head2);
+    return newHead;
+}
+
+
+
 int main()
 {
     cout << "Flatten 2D SLL" << endl;
@@ -135,9 +174,14 @@ int main()
     Node* head = convert_Arr_to_2D_SLL(Arr);
     print_2D_SLL(head);
 
-    cout << "After Flattening Sorted SLL" << endl;
+    cout << "Using Sol1 After Flattening Sorted SLL" << endl;
     Node* newHead = flatten_2D_SLL(head);
     print_2D_SLL(newHead);
+
+
+    cout << "Using Sol2 After Flattening Sorted SLL" << endl;
+    Node* newHead2 = flatten_2D_SLL_Sol2(head);
+    print_2D_SLL(newHead2);
 
     return 0;
 }
