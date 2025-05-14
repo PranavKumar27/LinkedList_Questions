@@ -153,11 +153,11 @@ Node* merge_2_SLL(Node* head1,Node* head2)
     return head->child;
 }
 
-// TC --> N*O(X)  where X = N*M
-// SC --> O(N)
+// TC --> N*O(X)  where X = N+M
+// SC --> O(N)  where N is size of Horizontal SLL and M is the size of vertical SLL
 Node* flatten_2D_SLL_Sol2(Node* head)
 {
-    if(head->next==nullptr)
+    if(head==nullptr || head->next==nullptr)
         return head;
 
     Node* head2 = flatten_2D_SLL_Sol2(head->next);
