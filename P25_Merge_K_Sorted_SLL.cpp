@@ -2,6 +2,7 @@
 #include <vector>
 #include <map>
 #include <algorithm>
+#include <queue>
 
 using namespace std;
 
@@ -111,7 +112,16 @@ Node* merge_SLL(Node* head1,Node* head2)
 
 
 // Better Approach- Using SLL Traversal and Sorted Nature of each List
-// TC --> O(X)  where X = N*M
+// TC --> O(N*K*K)
+//First and Second List TC = O(2N)
+//Merged and third List TC = O(2N) + O(N) = O(3N)
+//Merged and Fourth List TC = O(3N) + O(N) = O(4N)
+// Total TC = O(2N) + O(3N) + O(4N) ..... O(kN)
+// Hence Formula as O( N * (1 + 2+ 3 ......k))
+//                  O( N * k*(k+1)/2)
+//                  O(N*K*K)
+//                  ~~ O( N^3 ) if k=N
+
 // SC --> O(1)
 Node* merge_K_Sorted_SLL_Sol2(vector<Node*>& HeadList)
 {
@@ -131,6 +141,92 @@ Node* merge_K_Sorted_SLL_Sol2(vector<Node*>& HeadList)
 }
 
 
+
+// TC --> O(K*LogK) + O(K*N*3LogK)
+// SC --> O(K) for Heap
+typedef pair<int,Node*> PairOfVal_Node;
+// Using Min Heap
+Node* merge_K_Sorted_SLL_Sol3(vector<Node*>& HeadList)
+{
+    priority_queue<PairOfVal_Node,vector<PairOfVal_Node>,greater<PairOfVal_Node>> pq;
+
+    Node* dummyHead = new Node(-1);
+    Node* temp = dummyHead;
+    int k = HeadList.size();
+    for(int i=0;i<k;i++) // O(K*LogK)
+    {
+        if(HeadList[i]!=nullptr)
+        {
+            pq.push({HeadList[i]->data,HeadList[i]});
+        }
+
+    }
+    while(!pq.empty())  // O(K*N)
+    {
+        PairOfVal_Node MinNode = pq.top();  // O(LogK)  Each Operation in Heap Take O(Size of Heap)
+        int v = MinNode.first;
+        Node* ptr = MinNode.second;
+        pq.pop();                           // O(LogK)
+
+        if(ptr!=nullptr)
+        {
+            //cout << " Min Node = " << v << endl;
+            temp->next = ptr;
+            temp = ptr;
+        }
+
+
+        if(ptr!=nullptr && ptr->next!=nullptr)
+        {
+            int v = ptr->next->data;
+            //cout << "Pushing in PQ next of Min Node = " << v << endl;
+            pq.push({v,ptr->next});          // O(LogK)
+        }
+    }
+    return dummyHead->next;
+}
+
+class Compare
+{
+   public:
+       bool operator()(Node* a, Node* b) {
+         if(a->data > b->data)
+            return true;
+         else
+            return false;
+    }
+};
+
+Node* merge_K_Sorted_SLL_Sol4(vector<Node*>& NodeList)
+{
+    cout << __FUNCTION__ << endl;
+    priority_queue<Node*,vector<Node*>,Compare> heap; // Min Heap
+
+    for(int i=0;i<NodeList.size();i++)
+    {
+        if(NodeList[i]!=nullptr)
+            heap.push(NodeList[i]);
+    }
+
+    Node* dummyHead = new Node(-1);
+    Node* tail = dummyHead;
+    while(!heap.empty())
+    {
+        Node* TopNode = heap.top();
+        //cout << "Top =" << TopNode->val << ",";
+        heap.pop();
+
+        if(tail!=nullptr)
+            tail->next = TopNode;
+
+        tail = TopNode;
+
+        if(TopNode!=nullptr && TopNode->next!=nullptr)
+            heap.push(TopNode->next);
+    }
+    return dummyHead->next;
+}
+
 int main()
 {
     cout << "Merge K Sorted SLL" << endl;
@@ -142,14 +238,48 @@ int main()
     Node* head3 = convertArrToSLL(Arr3);
     Node* head2 = convertArrToSLL(Arr2);
 
-    vector<Node*> HeadList = {head1,head2,head3};
+    vector<Node*> HeadList1 = {head1,head2,head3};
 
-    Node* MergedHead1 = merge_K_Sorted_SLL_Sol1(HeadList);
+    vector<int> Arr4={1,7,11,12};
+    vector<int> Arr5={2,4,9,10};
+    vector<int> Arr6={3,5,6,8};
+
+    Node* head4 = convertArrToSLL(Arr4);
+    Node* head5 = convertArrToSLL(Arr5);
+    Node* head6 = convertArrToSLL(Arr6);
+
+    vector<Node*> HeadList2 = {head4,head5,head6};
+
+    vector<int> Arr7={1,7,11,12};
+    vector<int> Arr8={2,4,9,10};
+    vector<int> Arr9={3,5,6,8};
+
+    Node* head7 = convertArrToSLL(Arr7);
+    Node* head8 = convertArrToSLL(Arr8);
+    Node* head9 = convertArrToSLL(Arr9);
+
+    vector<Node*> HeadList3 = {head7,head8,head9};
+
+
+
+    Node* MergedHead1 = merge_K_Sorted_SLL_Sol1(HeadList1);
+    cout << "Using Sol 1 Merged K Sorted SLL" << endl;
     Print_SLL(MergedHead1);
 
 
-    Node* MergedHead2 = merge_K_Sorted_SLL_Sol2(HeadList);
+    Node* MergedHead2 = merge_K_Sorted_SLL_Sol2(HeadList1);
+    cout << "Using Sol 2 Merged K Sorted SLL" << endl;
     Print_SLL(MergedHead2);
+
+
+    Node* MergedHead3 = merge_K_Sorted_SLL_Sol3(HeadList2);
+    cout << "Using Sol 3 Merged K Sorted SLL" << endl;
+    Print_SLL(MergedHead3);
+
+
+    Node* MergedHead4 = merge_K_Sorted_SLL_Sol4(HeadList3);
+    cout << "Using Sol 4 Merged K Sorted SLL" << endl;
+    Print_SLL(MergedHead4);
 
     return 0;
 }
