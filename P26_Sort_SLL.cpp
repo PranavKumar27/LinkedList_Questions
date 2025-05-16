@@ -199,6 +199,8 @@ Node* findMid(Node* head)
 }
 
 
+// TC --> O(NLogN) + O(N/2)
+// SC -->O(LogN)
 Node* sort_SLL_Sol3(Node* head)
 {
     cout << __FUNCTION__ << endl;
