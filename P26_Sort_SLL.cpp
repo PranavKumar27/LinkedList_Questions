@@ -162,6 +162,66 @@ Node* sort_SLL_Sol2(Node* head)
     return l3;
 }
 
+
+// Using Tortoise and Hare Algo Modified with fast = fast->next;
+// If element is 1,2
+/*      s                 s                 s
+        4 5 2 1  --->   4 5 2 1   --->  4 5 2 1
+        f                   f                   f
+
+    mid = 2,  s  <---- incorrect mid
+
+    Mid = 1
+
+    Solve as
+        s                 s
+        4 5 2 1  --->   4 5 2 1   --->  f->next == null
+          f                   f             return s
+
+    s= 1  as mid Hence correct
+
+*/
+Node* findMid(Node* head)
+{
+    cout << __FUNCTION__ << endl;
+    if(head==nullptr||head->next==nullptr)
+        return head;
+
+    Node* slow = head;
+    Node* fast = head->next;
+
+    while(fast!=nullptr && fast->next!=nullptr)
+    {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+    return slow;
+}
+
+
+Node* sort_SLL_Sol3(Node* head)
+{
+    cout << __FUNCTION__ << endl;
+    Print_SLL(head);
+    if(head==nullptr || head->next==nullptr)
+        return head;
+
+
+    // Find Middle of the List Using Tortoise and Hare
+
+    Node* mid = findMid(head);
+
+    Node* list2 = mid->next;
+    mid->next = nullptr;
+    Node* list1 = head;
+
+    list1 =sort_SLL_Sol3(list1);
+    list2 =sort_SLL_Sol3(list2);
+
+    Node* l3=merge_2_SLL(list1,list2);
+    return l3;
+}
+
 int main()
 {
     cout << "Sorting SLL " << endl;
@@ -176,6 +236,10 @@ int main()
 
     head = sort_SLL_Sol2(head);
     cout << "Using Sol 2 -> After Sort" << endl;
+    Print_SLL(head);
+
+    head = sort_SLL_Sol3(head);
+    cout << "Using Sol 3 -> After Sort" << endl;
     Print_SLL(head);
     return 0;
 }
